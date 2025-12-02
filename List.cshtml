@@ -1,0 +1,125 @@
+﻿@model List<homework_8.Models.Resource>
+
+@{
+    ViewData["Title"] = "Resource List";
+}
+
+<div class="container mt-4">
+
+    @* Display Success Message *@
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>📋 Resource List</h2>
+
+        <div>
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-controller="Resource" asp-action="Create" class="btn btn-primary me-2">
+                    Create New Resource
+                </a>
+                <a asp-controller="Booking" asp-action="ApprovalDashboard" class="btn btn-warning">
+                     Approval Dashboard
+                </a>
+            }
+        </div>
+    </div>
+
+    @Html.AntiForgeryToken()
+    @if (Model != null && Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Created Date</th>
+                        <th>Status</th>
+                        @if (User.IsInRole("Employee"))
+                        {
+                            <th>Action</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var resource in Model)
+                    {
+                        <tr>
+                            <td>@resource.ResourceID</td>
+                            <td><strong>@resource.ResourceName</strong></td>
+                            <td>
+                                <span class="badge bg-info text-dark">@resource.Type</span>
+                            </td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(resource.ResourceDescription))
+                                {
+                                    @resource.ResourceDescription
+                                }
+                                else
+                                {
+                                    <span class="text-muted">No description</span>
+                                }
+                            </td>
+                            <td>@resource.CreatedDateTime.ToString("MMM dd, yyyy")</td>
+                            <td>
+                                @if (resource.IsAvailable)
+                                {
+                                    <span class="badge bg-success">Available</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">Booked</span>
+                                }
+                            </td>
+                            @if (User.IsInRole("Employee"))
+                            {
+                                <td>
+                                    @if (resource.IsAvailable)
+                                    {
+                                        <button class="btn btn-sm btn-primary request-booking"
+                                                data-resource-id="@resource.ResourceID">
+                                            Book Now
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-sm btn-secondary" disabled>
+                                            Already Booked
+                                        </button>
+                                    }
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning text-center">
+            <h4>No Resources Found</h4>
+            <p>There are no resources in the system yet.</p>
+
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-controller="Resource" asp-action="Create" class="btn btn-primary mt-2">
+                    Create First Resource
+                </a>
+            }
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="~/js/site.js"></script>
+}

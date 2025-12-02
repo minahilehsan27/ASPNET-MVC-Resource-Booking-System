@@ -1,0 +1,28 @@
+﻿@model List<homework_8.Models.Booking>
+
+@{
+    ViewData["Title"] = "Booking Approval Dashboard";
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2> Booking Approval Dashboard</h2>
+            <p class="text-muted">Review and approve pending booking requests</p>
+        </div>
+        <a asp-controller="Resource" asp-action="List" class="btn btn-secondary">
+             Back to Resources
+        </a>
+    </div>
+
+    @Html.AntiForgeryToken()
+
+    <div id="pendingBookingsContainer">
+        <partial name="_PendingBookings" model="Model" />
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/site.js"></script>
+}

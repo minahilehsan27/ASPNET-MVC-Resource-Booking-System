@@ -1,0 +1,48 @@
+﻿@model List<homework_8.Models.Booking>
+
+@if (Model != null && Model.Any())
+{
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Resource</th>
+                    <th>Requested By (User ID)</th>
+                    <th>Requested At</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var booking in Model)
+                {
+                    <tr id="booking-@booking.BookingId">
+                        <td><strong>#@booking.BookingId</strong></td>
+                        <td>
+                            <strong>@booking.Resource?.ResourceName</strong>
+                            <br>
+                            <span class="badge bg-info text-dark">@booking.Resource?.Type</span>
+                        </td>
+                        <td>
+                            <small class="text-muted">@booking.UserId</small>
+                        </td>
+                        <td>@booking.RequestedTime.ToString("MMM dd, yyyy HH:mm")</td>
+                        <td>
+                            <button class="btn btn-sm btn-success approve-booking"
+                                    data-booking-id="@booking.BookingId">
+                                 Approve
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="alert alert-info text-center">
+        <h4>📭 No Pending Requests</h4>
+        <p class="mb-0">There are no pending booking requests at this time.</p>
+    </div>
+}

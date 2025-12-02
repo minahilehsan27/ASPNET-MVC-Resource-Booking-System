@@ -1,0 +1,86 @@
+﻿@{
+    ViewData["Title"] = "Access Denied";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-danger shadow">
+                <div class="card-header bg-danger text-white">
+                    <h3 class="mb-0 text-center">
+                        🚫 Access Denied
+                    </h3>
+                </div>
+                <div class="card-body text-center py-5">
+                    <div class="mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" fill="currentColor" class="text-danger" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                        </svg>
+                    </div>
+
+                    <h2 class="text-danger mb-3">You Don't Have Permission</h2>
+
+                    <p class="lead mb-4">
+                        You attempted to access a page that requires special permissions.
+                    </p>
+
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <div class="alert alert-warning">
+                            <p class="mb-2">
+                                <strong>Current User:</strong> @User.Identity.Name
+                            </p>
+                            <p class="mb-0">
+                                <strong>Your Role:</strong>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <span class="badge bg-danger">Admin</span>
+                                }
+                                else if (User.IsInRole("Employee"))
+                                {
+                                    <span class="badge bg-success">Employee</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">No Role Assigned</span>
+                                }
+                            </p>
+                        </div>
+
+                        <p class="text-muted">
+                            This page may require <strong>Admin</strong> privileges.
+                        </p>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            <p class="mb-0">
+                                You need to <strong>log in</strong> to access this page.
+                            </p>
+                        </div>
+                    }
+
+                    <div class="mt-4">
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-primary me-2">
+                            🏠 Go to Home
+                        </a>
+
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <a asp-controller="Resource" asp-action="List" class="btn btn-secondary">
+                                📋 View Resources
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Account" asp-action="Login" class="btn btn-success">
+                                🔑 Login
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

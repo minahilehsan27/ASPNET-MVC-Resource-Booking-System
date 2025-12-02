@@ -1,0 +1,54 @@
+﻿@model homework_8.Models.Resource
+
+@{
+    ViewData["Title"] = "Create Resource";
+}
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h2>Create New Resource</h2>
+        </div>
+        <div class="card-body">
+
+            @* Show validation errors *@
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+            <form method="post" asp-action="Create" asp-controller="Resource">
+                @Html.AntiForgeryToken()
+
+                <div class="mb-3">
+                    <label asp-for="ResourceName" class="form-label">Resource Name *</label>
+                    <input asp-for="ResourceName" class="form-control" />
+                    <span asp-validation-for="ResourceName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Type" class="form-label">Resource Type *</label>
+                    <select asp-for="Type" class="form-control">
+                        <option value="">-- Select Type --</option>
+                        <option value="Meeting Room">Meeting Room</option>
+                        <option value="Projector">Projector</option>
+                        <option value="Laptop">Laptop</option>
+                    </select>
+                    <span asp-validation-for="Type" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ResourceDescription" class="form-label">Description (Optional)</label>
+                    <textarea asp-for="ResourceDescription" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="ResourceDescription" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a asp-action="List" class="btn btn-secondary">Back</a>
+                    <button type="submit" class="btn btn-success">Create Resource</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
